@@ -1,0 +1,35 @@
+/* MainBooks.css */
+
+.main-books-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.book-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 200px;
+    text-align: center;
+    background-color: #fff;
+}
+
+.book-item img {
+    width: 100%;
+    height: auto;
+}
+
+.book-item h2 {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.book-item p {
+    font-size: 0.9em;
+    color: #555;
+    margin: 5px 10px;
+}

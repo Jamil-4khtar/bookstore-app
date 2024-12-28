@@ -1,33 +1,34 @@
-import React, { useState} from 'react'
+import React from 'react'
+import { BiBookHeart, BiBell, BiSolidUserCircle } from "react-icons/bi";
+import { IoDiamondSharp } from "react-icons/io5";
 import "../styles/Navbar.css"
-const Navbar = ({ onSearch }) => {
-    const [query, setQuery] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (query.trim()) {
-            onSearch(query.trim());
-        }
-    };
 
+function Navbar() {
     return (
-        <nav className="navbar">
-            <div className="nav-brand">
-                <img src="/api/placeholder/40/40" alt="KeazoN Books" className="nav-logo" />
-                <span className="nav-title">KeazoN Books</span>
+        <nav>
+            <div id='left'>
+                <img src={process.env.PUBLIC_URL + "/image.png"} alt="Logo" />
+                <p>Kaezen<span>BOOKS</span></p>
             </div>
-            <form className="search-form" onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    className="search-input"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search for books..."
-                />
-                <button type="submit" className="search-button">Search</button>
-            </form>
+            <div id='center'>
+                <form>
+                    <input
+                        type='text'
+                        placeholder='Search your book'
+                    />
+                    <button>Search</button>
+                </form>
+            </div>
+            <div id='right'>
+                <BiBookHeart />
+                <BiBell/>
+                <IoDiamondSharp />
+                <BiSolidUserCircle/>
+            </div>
         </nav>
-    );
-};
+    )
+}
 
 export default Navbar
+

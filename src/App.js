@@ -1,71 +1,43 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect } from 'react'
 import "./App.css"
 import Navbar from './components/Navbar'
-import BookDetail from './components/BookDetails';
-import BookList from './components/BookList';
+import MainBooks from './components/MainBooks'
+import MoreBooks from './components/MoreBooks'
 
-const App = () => {
-  const [books, setBooks] = useState([]);
-  const [selectedBook, setSelectedBook] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const fetchBooks = async (query) => {
-    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
-    if (!response.ok) throw new Error('Failed to fetch books');
-    return response.json();
-  };
+function App() {
+  const [mainBooks, setMainBooks] = useState([])
 
   useEffect(() => {
-    const loadInitialBooks = async () => {
+    const harry = "https://www.googleapis.com/books/v1/volumes?q=harry+potter";
+    const sherlock = "https://www.googleapis.com/books/v1/volumes?q=sherlock+holmes";
+
+    async function fetchData() {
       try {
-        setLoading(true);
-        const [harryPotterBooks, sherlockBooks] = await Promise.all([
-          fetchBooks('harry+potter'),
-          fetchBooks('sherlock+holmes')
-        ]);
+        let responses1 = await fetch(harry)
+        let responses2 = await fetch(sherlock)
 
-        setBooks([...harryPotterBooks.items, ...sherlockBooks.items]);
-      } catch (err) {
-        setError('Failed to load books');
-        console.error(err);
-      } finally {
-        setLoading(false);
+        let data1 = await responses1.json()
+        let data2 = await responses2.json()
+
+        let books = [...data1.items, ...data2.items]
+        setMainBooks(books)
+
+      } catch (error) {
+        console.log(error)
       }
-    };
-
-    loadInitialBooks();
-  }, []);
-
-  const handleSearch = async (query) => {
-    try {
-      setLoading(true);
-      const data = await fetchBooks(query);
-      setBooks(data.items || []);
-    } catch (err) {
-      setError('Search failed');
-    } finally {
-      setLoading(false);
     }
-  };
+    fetchData()
+  },[]);
+
+console.log(mainBooks)
 
   return (
-    <div className="app">
-      <Navbar onSearch={handleSearch} />
-      <main className="main-content">
-        {selectedBook ? (
-          <BookDetail book={selectedBook} onClose={() => setSelectedBook(null)} />
-        ) : (
-          <BookList
-            books={books}
-            onSelect={setSelectedBook}
-            loading={loading}
-            error={error}
-          />
-        )}
-      </main>
+    <div>
+      <Navbar/>
+      {mainBooks && <MainBooks books={mainBooks}/>}
+      {mainBooks && <MoreBooks books={mainBooks}/>}
     </div>
-  );
-};
+  )
+}
 
 export default App
